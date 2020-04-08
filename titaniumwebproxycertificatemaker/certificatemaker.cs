@@ -53,11 +53,12 @@ namespace titaniumwebproxycertificatemaker
         }
         private static void InstallCert()
         {
-            //make a certificate and install it
+            //make a certificate and install it based on what is in the config file
         }
         private static void UninstallCert()
         {
             //uninstall the created certificate
         }
+
     }
 }
