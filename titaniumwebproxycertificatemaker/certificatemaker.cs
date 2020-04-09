@@ -72,6 +72,12 @@ namespace titaniumwebproxycertificatemaker
         private static void UninstallCert()
         {
             //uninstall the created certificate
+            ProxyServer proxyServer = new ProxyServer();
+            proxyServer.CertificateManager.LoadRootCertificate("RootCert.pfx", "", false);
+            //may not need to start the proxy here, as we are just removing a cert, to install we need to start
+            proxyServer.CertificateManager.RemoveTrustedRootCertificateAsAdmin();
+            proxyServer.Start();
+            proxyServer.Stop();
         }
 
     }
