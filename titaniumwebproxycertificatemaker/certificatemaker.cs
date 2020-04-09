@@ -56,7 +56,7 @@ namespace titaniumwebproxycertificatemaker
             Console.WriteLine("CertificateMaker /uninstall to remove the existing certificate");
             Console.WriteLine("CertificateMaker /reinstall to remove the existing certificate and install a new one");
             Console.WriteLine("Any other switch or no switch will display this help message");
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("Press enter to continue...");
             Console.ReadKey();
         }
         private static void InstallCert()
