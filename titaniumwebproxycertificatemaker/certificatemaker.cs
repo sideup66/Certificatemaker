@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Titanium.Web.Proxy;
+using Titanium.Web.Proxy.Models;
 
 namespace titaniumwebproxycertificatemaker
 {
@@ -54,6 +57,17 @@ namespace titaniumwebproxycertificatemaker
         private static void InstallCert()
         {
             //make a certificate and install it based on what is in the config file
+
+            //declare a proxy object
+            ProxyServer proxyServer = new ProxyServer();
+            proxyServer.CertificateManager.RootCertificateIssuerName = ConfigurationManager.AppSettings["CertIssuerName"].ToString();
+            proxyServer.CertificateManager.RootCertificateName = ConfigurationManager.AppSettings["CertName"].ToString();
+            //install the certificate into the system root store
+            proxyServer.CertificateManager.TrustRootCertificateAsAdmin(true);
+            proxyServer.Start();
+
+            //now stop the proxy server as we are just adding a cert
+            proxyServer.Stop();
         }
         private static void UninstallCert()
         {
