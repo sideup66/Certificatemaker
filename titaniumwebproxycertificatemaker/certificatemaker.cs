@@ -20,16 +20,21 @@ namespace titaniumwebproxycertificatemaker
                 {
                     //install the certficiate
                     Console.WriteLine("Installing certificate,please wait...");
+                    Console.WriteLine("You will get a prompt to install a certificate with the name you specified. Please click YES on the prompt...");
+                    InstallCert();
                 }
                 else if (arg.ToString().ToLower().Contains("/uninstall"))
                 {
                     //Uninstall the certificate
                     Console.WriteLine("Uninstalling certificate, please wait...");
+                    UninstallCert();
                 }
                 else if (arg.ToString().ToLower().Contains("/reinstall"))
                 {
                     //reinstall the certificate by uninstalling, then installing the certificate
                     Console.WriteLine("Reinstalling certificate, please wait...");
+                    UninstallCert();
+                    InstallCert();
                 }
                 else
                 {
