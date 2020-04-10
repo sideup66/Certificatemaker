@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Titanium.Web.Proxy;
 using Titanium.Web.Proxy.Models;
+using System.IO;
 
 namespace titaniumwebproxycertificatemaker
 {
@@ -18,10 +19,39 @@ namespace titaniumwebproxycertificatemaker
             {
                 if (arg.ToString().ToLower().Contains("/install"))
                 {
+                    //read in the config file, if there is one, if not, use a default settings
+                    //declare cert values with default entries
+                    string CertIssuerName = "CertificateGenerator";
+                    string CertName = "CertMakerkey";
+                    try
+                    {
+                        if (File.Exists("UserConfig.ini"))
+                        {
+                            string line;
+                            StreamReader reader = new StreamReader("UserConfig.ini");
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                if (line.Contains("CertIssuerName:"))
+                                {
+                                    CertIssuerName = line.Replace("CertIssuerName:", "");
+                                }
+                                if (line.Contains("CertName:"))
+                                {
+                                    CertName = line.Replace("CertName:", "");
+                                }
+                            }
+
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("There was a problem reading the certificate! default values will be used...");
+                    }
+
                     //install the certficiate
                     Console.WriteLine("Installing certificate,please wait...");
                     Console.WriteLine("You will get a prompt to install a certificate with the name you specified. Please click YES on the prompt...");
-                    InstallCert();
+                    InstallCert(CertIssuerName, CertName);
                 }
                 else if (arg.ToString().ToLower().Contains("/uninstall"))
                 {
@@ -34,7 +64,34 @@ namespace titaniumwebproxycertificatemaker
                     //reinstall the certificate by uninstalling, then installing the certificate
                     Console.WriteLine("Reinstalling certificate, please wait...");
                     UninstallCert();
-                    InstallCert();
+
+                    string CertIssuerName = "CertificateGenerator";
+                    string CertName = "CertMakerkey";
+                    try
+                    {
+                        if (File.Exists("UserConfig.ini"))
+                        {
+                            string line;
+                            StreamReader reader = new StreamReader("UserConfig.ini");
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                if (line.Contains("CertIssuerName:"))
+                                {
+                                    CertIssuerName = line.Replace("CertIssuerName:", "");
+                                }
+                                if (line.Contains("CertName:"))
+                                {
+                                    CertName = line.Replace("CertName:", "");
+                                }
+                            }
+
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("There was a problem reading the certificate! default values will be used...");
+                    }
+                    InstallCert(CertIssuerName, CertName);
                 }
                 else
                 {
@@ -59,7 +116,7 @@ namespace titaniumwebproxycertificatemaker
             Console.WriteLine("Press enter to continue...");
             Console.ReadKey();
         }
-        private static void InstallCert()
+        private static void InstallCert(string CertIssuerName, string CertName)
         {
             //make a certificate and install it based on what is in the config file
 
