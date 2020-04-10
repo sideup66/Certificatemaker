@@ -122,8 +122,8 @@ namespace titaniumwebproxycertificatemaker
 
             //declare a proxy object
             ProxyServer proxyServer = new ProxyServer();
-            proxyServer.CertificateManager.RootCertificateIssuerName = ConfigurationManager.AppSettings["CertIssuerName"].ToString();
-            proxyServer.CertificateManager.RootCertificateName = ConfigurationManager.AppSettings["CertName"].ToString();
+            proxyServer.CertificateManager.RootCertificateIssuerName = CertIssuerName;
+            proxyServer.CertificateManager.RootCertificateName = CertName;
             //install the certificate into the system root store
             proxyServer.CertificateManager.TrustRootCertificateAsAdmin(true);
             proxyServer.Start();
