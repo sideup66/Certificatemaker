@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Titanium.Web.Proxy;
-using Titanium.Web.Proxy.Models;
 using System.IO;
 
 namespace titaniumwebproxycertificatemaker
@@ -45,7 +39,7 @@ namespace titaniumwebproxycertificatemaker
                     }
                     catch
                     {
-                        Console.WriteLine("There was a problem reading the certificate! default values will be used...");
+                        Console.WriteLine("There was a problem reading the Configuration File! default values will be used...");
                     }
 
                     //install the certficiate
@@ -89,7 +83,7 @@ namespace titaniumwebproxycertificatemaker
                     }
                     catch
                     {
-                        Console.WriteLine("There was a problem reading the certificate! default values will be used...");
+                        Console.WriteLine("There was a problem reading the Configuration File! default values will be used...");
                     }
                     InstallCert(CertIssuerName, CertName);
                 }
