@@ -119,8 +119,9 @@ namespace titaniumwebproxycertificatemaker
             proxyServer.CertificateManager.RootCertificateIssuerName = CertIssuerName;
             proxyServer.CertificateManager.RootCertificateName = CertName;
             //install the certificate into the system root store
-            proxyServer.CertificateManager.EnsureRootCertificate();
-            proxyServer.CertificateManager.TrustRootCertificateAsAdmin(true);
+            //proxyServer.CertificateManager.EnsureRootCertificate();
+            proxyServer.CertificateManager.TrustRootCertificateAsAdmin();
+            proxyServer.CertificateManager.TrustRootCertificate();
             proxyServer.Start();
 
             //now stop the proxy server as we are just adding a cert
@@ -135,6 +136,11 @@ namespace titaniumwebproxycertificatemaker
             proxyServer.CertificateManager.RemoveTrustedRootCertificateAsAdmin();
             proxyServer.Start();
             proxyServer.Stop();
+            //lastly we delete the file
+            if (File.Exists("RootCert.pfx"))
+            {
+                File.Delete("RootCert.pfx");
+            }
         }
 
     }
