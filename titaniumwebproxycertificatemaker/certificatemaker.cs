@@ -119,12 +119,13 @@ namespace titaniumwebproxycertificatemaker
             proxyServer.CertificateManager.RootCertificateIssuerName = CertIssuerName;
             proxyServer.CertificateManager.RootCertificateName = CertName;
             //install the certificate into the system root store
-            proxyServer.CertificateManager.EnsureRootCertificate();
-            proxyServer.CertificateManager.TrustRootCertificateAsAdmin(true);
-            proxyServer.Start();
+            proxyServer.CertificateManager.EnsureRootCertificate(false,true,true);
+            //proxyServer.CertificateManager.RemoveTrustedRootCertificate();
+            //proxyServer.CertificateManager.TrustRootCertificateAsAdmin(true);
+            //proxyServer.Start();
 
             //now stop the proxy server as we are just adding a cert
-            proxyServer.Stop();
+            //proxyServer.Stop();
         }
         private static void UninstallCert()
         {
@@ -132,10 +133,10 @@ namespace titaniumwebproxycertificatemaker
             ProxyServer proxyServer = new ProxyServer();
             proxyServer.CertificateManager.LoadRootCertificate("RootCert.pfx", "", false);
             //may not need to start the proxy here, as we are just removing a cert, to install we need to start
-            proxyServer.Start();
-            proxyServer.Stop();
-            proxyServer.CertificateManager.RemoveTrustedRootCertificateAsAdmin();
-            proxyServer.CertificateManager.RemoveTrustedRootCertificate();
+            //proxyServer.Start();
+            //proxyServer.Stop();
+            proxyServer.CertificateManager.RemoveTrustedRootCertificateAsAdmin(false);
+            proxyServer.CertificateManager.RemoveTrustedRootCertificate(false);
             //lastly we delete the file
             if (File.Exists("RootCert.pfx"))
             {
