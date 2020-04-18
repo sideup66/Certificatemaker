@@ -12,7 +12,7 @@ namespace titaniumwebproxycertificatemaker
             //read in the config file, if there is one, if not, use a default settings
             //declare cert values with default entries
             string CertIssuerName = "CertificateGenerator";
-            string CertName = "CertMakerkey";
+            string CertName = "CertMakername";
             try
             {
                 if (File.Exists("UserConfig.ini"))
