@@ -8,40 +8,41 @@ namespace titaniumwebproxycertificatemaker
     {
         static void Main(string[] args)
         {
+            //read in the config file, if it exists
+            //read in the config file, if there is one, if not, use a default settings
+            //declare cert values with default entries
+            string CertIssuerName = "CertificateGenerator";
+            string CertName = "CertMakerkey";
+            try
+            {
+                if (File.Exists("UserConfig.ini"))
+                {
+                    string line;
+                    StreamReader reader = new StreamReader("UserConfig.ini");
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (line.Contains("CertIssuerName:"))
+                        {
+                            CertIssuerName = line.Replace("CertIssuerName:", "");
+                        }
+                        if (line.Contains("CertName:"))
+                        {
+                            CertName = line.Replace("CertName:", "");
+                        }
+                    }
+
+                }
+            }
+            catch
+            {
+                Console.WriteLine("There was a problem reading the Configuration File! default values will be used...");
+            }
+
             //read in the switch provided that tells us whether to make a cert or remove an existing cert
             foreach (string arg in args)
             {
                 if (arg.ToString().ToLower().Contains("/install"))
                 {
-                    //read in the config file, if there is one, if not, use a default settings
-                    //declare cert values with default entries
-                    string CertIssuerName = "CertificateGenerator";
-                    string CertName = "CertMakerkey";
-                    try
-                    {
-                        if (File.Exists("UserConfig.ini"))
-                        {
-                            string line;
-                            StreamReader reader = new StreamReader("UserConfig.ini");
-                            while ((line = reader.ReadLine()) != null)
-                            {
-                                if (line.Contains("CertIssuerName:"))
-                                {
-                                    CertIssuerName = line.Replace("CertIssuerName:", "");
-                                }
-                                if (line.Contains("CertName:"))
-                                {
-                                    CertName = line.Replace("CertName:", "");
-                                }
-                            }
-
-                        }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("There was a problem reading the Configuration File! default values will be used...");
-                    }
-
                     //install the certficiate
                     Console.WriteLine("Installing certificate,please wait...");
                     Console.WriteLine("You will get a prompt to install a certificate with the name you specified. Please click YES on the prompt...");
@@ -58,33 +59,6 @@ namespace titaniumwebproxycertificatemaker
                     //reinstall the certificate by uninstalling, then installing the certificate
                     Console.WriteLine("Reinstalling certificate, please wait...");
                     UninstallCert();
-
-                    string CertIssuerName = "CertificateGenerator";
-                    string CertName = "CertMakerkey";
-                    try
-                    {
-                        if (File.Exists("UserConfig.ini"))
-                        {
-                            string line;
-                            StreamReader reader = new StreamReader("UserConfig.ini");
-                            while ((line = reader.ReadLine()) != null)
-                            {
-                                if (line.Contains("CertIssuerName:"))
-                                {
-                                    CertIssuerName = line.Replace("CertIssuerName:", "");
-                                }
-                                if (line.Contains("CertName:"))
-                                {
-                                    CertName = line.Replace("CertName:", "");
-                                }
-                            }
-
-                        }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("There was a problem reading the Configuration File! default values will be used...");
-                    }
                     InstallCert(CertIssuerName, CertName);
                 }
                 else
@@ -120,12 +94,7 @@ namespace titaniumwebproxycertificatemaker
             proxyServer.CertificateManager.RootCertificateName = CertName;
             //install the certificate into the system root store
             proxyServer.CertificateManager.EnsureRootCertificate(false,true,true);
-            //proxyServer.CertificateManager.RemoveTrustedRootCertificate();
-            //proxyServer.CertificateManager.TrustRootCertificateAsAdmin(true);
-            //proxyServer.Start();
 
-            //now stop the proxy server as we are just adding a cert
-            //proxyServer.Stop();
         }
         private static void UninstallCert()
         {
@@ -133,10 +102,7 @@ namespace titaniumwebproxycertificatemaker
             ProxyServer proxyServer = new ProxyServer();
             proxyServer.CertificateManager.LoadRootCertificate("RootCert.pfx", "", false);
             //may not need to start the proxy here, as we are just removing a cert, to install we need to start
-            //proxyServer.Start();
-            //proxyServer.Stop();
-            proxyServer.CertificateManager.RemoveTrustedRootCertificateAsAdmin(false);
-            proxyServer.CertificateManager.RemoveTrustedRootCertificate(false);
+            proxyServer.CertificateManager.RemoveTrustedRootCertificate(true);
             //lastly we delete the file
             if (File.Exists("RootCert.pfx"))
             {
