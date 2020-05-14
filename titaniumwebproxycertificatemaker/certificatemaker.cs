@@ -45,7 +45,7 @@ namespace titaniumwebproxycertificatemaker
                 {
                     //install the certficiate
                     Console.WriteLine("Installing certificate,please wait...");
-                    Console.WriteLine("You will get a prompt to install a certificate with the name you specified. Please click YES on the prompt...");
+                    Console.WriteLine("You may get a prompt to install a certificate with the name you specified. Please click YES on the prompt...");
                     InstallCert(CertIssuerName, CertName);
                 }
                 else if (arg.ToString().ToLower().Contains("/uninstall"))
@@ -82,6 +82,8 @@ namespace titaniumwebproxycertificatemaker
             Console.WriteLine("CertificateMaker /reinstall to remove the existing certificate and install a new one");
             Console.WriteLine("Any other switch or no switch will display this help message");
             Console.WriteLine("Press enter to continue...");
+            Console.WriteLine("This program uses Titanium Web proxy, which is licensed under the MIT License agreement");
+            Console.WriteLine("Info can be found here: https://github.com/justcoding121/Titanium-Web-Proxy/");
             Console.ReadKey();
         }
         private static void InstallCert(string CertIssuerName, string CertName)
